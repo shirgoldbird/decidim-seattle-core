@@ -1,0 +1,1 @@
+"use strict";$(function(){window.DecidimProposals=window.DecidimProposals||{},window.DecidimProposals.bindProposalAddress=function(){var i=$("input:checkbox[name$='[has_address]']"),o=$("#address_input");if(i.length>0){var s=function(){i[0].checked?o.show():o.hide()};s(),i.on("change",s)}},window.DecidimProposals.bindProposalAddress()});
