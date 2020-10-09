@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# This script is intended to be idempotent, in that you can run it
+# multiple times and it won't break anything. For example, if postgis
+# was added after the last time you ran it, it should be able to install
+# postgis and not try to reinstall postgresql or have other unpleasant
+# side-effects.
+
+BUNDLER_VERSION="~>2.1.0"
+
+cd "$(dirname "$0")/.." || exit 1
+DIR=$(pwd)
+
+for P in "$DIR"/script/dev-setup.d/*; do
+  source "$P"
+done
+
+set -e
+
+function on-exit() {
+  status=$?
+  if [ $status -ne 0 ]; then
+    echo
+    error "Setup wasn't successful"
+    error "Please check the logs above, follow any instructions and run $0 again"
+    exit $status
+  fi
+}
+trap "on-exit" EXIT
+
+info "Install dev dependencies"
+
+info "Installing ruby (if necessary)"
+add-asdf-plugin ruby https://github.com/asdf-vm/asdf-ruby.git
+install-asdf-plugins
+
+info "Installing bundler (if necessary)"
+gem install bundler --conservative --version "$BUNDLER_VERSION"
+
+info "Installing postgres (if necessary)"
+if ! cmd psql; then
+  brew-install postgresql
+fi
+
+info "Installing postgis (if necessary)"
+if ! cmd shp2pgsql; then
+  brew-install postgis
+fi
+
+info "Installing imagemagick (if necessary)"
+if ! cmd convert; then
+  brew-install imagemagick
+fi
+
+info "Install gems (if necessary)"
+bundle install
+
+info "Creating the database, migrating, installing seed data (if necessary)"
+bin/rails db:create db:migrate
+# Run in a separate command to avoid https://github.com/rails/rails/issues/29112
+#bin/rails db:seed
+
+info "Creating development_env.rb file to store local credentials (if necessary)"
+FILE="$DIR"/config/development_env.rb
+if [ ! -f "$FILE" ]; then
+    echo "# This file contains the ENV vars necessary to run the app locally." >> $FILE
+    echo "# Some of these values are sensitive, and some are developer specific." >> $FILE
+    echo "#" >> $FILE
+    echo "# DO NOT CHECK THIS FILE INTO VERSION CONTROL!" >> $FILE
+fi
+
+echo -e "${GREEN}>> You're all set up!${DEFAULT}"
