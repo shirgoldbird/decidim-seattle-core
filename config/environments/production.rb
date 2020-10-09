@@ -33,6 +33,7 @@ Rails.application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
+  config.action_controller.asset_host = "https://decidim-core-staging.herokuapp.com"
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
@@ -64,6 +65,19 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "decidim_application_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
+
+  # Default URL for application (Devise)
+  config.action_controller.default_url_options = {
+    # protocol: "https", # Breaks login redirection
+    host: "decidim-core-staging.herokuapp.com",
+    port: 443
+  }
+
+  # Default URL for mailer (Devise)
+  config.action_mailer.default_url_options = {
+    protocol: "https",
+    host: "decidim-core-staging.herokuapp.com",
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
