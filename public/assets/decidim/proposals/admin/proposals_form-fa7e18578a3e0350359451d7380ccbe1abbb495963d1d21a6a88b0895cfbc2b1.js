@@ -1,0 +1,1 @@
+"use strict";$(function(){var e,i,n,d=$(".proposal_form_admin");d.length>0&&(e=d.find("#proposal_created_in_meeting"),i=d.find("#proposal_meeting"),n=function(){var n=e.prop("checked");i.find("select").attr("disabled","disabled"),i.hide(),n&&(i.find("select").attr("disabled",!n),i.show())},e.on("change",n),n())});
