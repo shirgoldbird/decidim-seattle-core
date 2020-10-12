@@ -61,7 +61,7 @@ bin/rails db:create db:migrate
 #bin/rails db:seed
 
 info "Creating development_env.rb file to store local credentials (if necessary)"
-FILE="$DIR"/config/development_env.rb
+FILE="$DIR"/config/development_env_secrets.rb
 if [ ! -f "$FILE" ]; then
     echo "# This file contains the ENV vars necessary to run the app locally." >> $FILE
     echo "# Some of these values are sensitive, and some are developer specific." >> $FILE
