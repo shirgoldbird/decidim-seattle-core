@@ -4,7 +4,7 @@ require 'rails/all'
 
 # add local environment variables for dev environment
 # http://blog.leshill.org/blog/2010/11/02/heroku-environment-variables.html
-if Rails.env.production?
+if Rails.env.development?
   begin
     load(File.expand_path('../development_env_secrets.rb', __FILE__))
   rescue LoadError => e
