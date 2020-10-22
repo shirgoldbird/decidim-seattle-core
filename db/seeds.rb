@@ -12,12 +12,12 @@ Decidim.seed!
 # which is not possible through the regular website and causes various issues
 # when viewing and editing plans or proposals tied to plans. Let's patch that
 # up for now.
-# 
+#
 # admin = Decidim::User.find_by_email("admin@example.org")
 # Decidim::Plans::Plan.all.each do |p|
 #   p.coauthorships = []
 #   p.add_coauthor(admin)
 # end
-#
-# # Racial and social equity composite index data
-# EquityCompositesImporter.import!
+
+# Racial and social equity composite index data
+EquityCompositesImporter.import!

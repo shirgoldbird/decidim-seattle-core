@@ -1,0 +1,7 @@
+en:
+  activemodel:
+    attributes:
+      attachment:
+        title: Title for image or attachment
+      organization:
+        show_equity_composite_index: Show equity index on proposals
