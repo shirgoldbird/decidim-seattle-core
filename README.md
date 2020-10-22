@@ -20,3 +20,22 @@ user.save!
 6. Fill the rest of the form and submit it.
 
 You're good to go!
+
+## Running with Docker
+After installing [Docker](https://docs.docker.com/get-docker/), run
+
+
+```
+docker-compose up
+```
+
+Database migrations and seeds will automatically be run if needed,
+so your instance should always be up to date.
+
+To run a one off command, like the Rails console, you can use the
+[docker-compose `exec` command](https://docs.docker.com/compose/reference/exec/):
+
+```
+docer-compose up
+docker-compose exec app bin/rails console
+```
