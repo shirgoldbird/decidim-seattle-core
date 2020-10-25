@@ -1,0 +1,19 @@
+en:
+  decidim:
+    menu:
+      processes: Participate
+      more_information: About
+    proposals:
+      proposals:
+        orders:
+          most_equitable: Most equitable
+      equity:
+        card_tag_title: 'Potential Impact:'
+        card_more_info: What is this?
+        proposal_title: Potential Impact
+        proposal_description: The location of each proposal is used to reference the City of Seattle's Racial and Social Equity Composite Index to help determine the potential impact on communities. Because data has limitations, the measure presented here only tells part of a larger story.
+        quintile1: Lowest
+        quintile2: Low
+        quintile3: Middle
+        quintile4: High
+        quintile5: Highest

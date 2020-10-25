@@ -58,5 +58,20 @@ module DecidimApplication
 
       Decidim::ParticipatoryProcesses::ParticipatoryProcessesController.send(:include, ParticipatoryProcessesControllerExtensions)
     end
+
+    # See:
+    # https://guides.rubyonrails.org/configuring.html#initialization-events
+    #
+    # Run before every request in development.
+    config.to_prepare do
+      # Seattle Extensions and Overrides
+      Decidim::Proposals::ProposalPresenter.send(:include, EquityQuintilePresenterExtensions)
+      #Decidim::Proposals::Admin::UpdateProposal.send(:include, AdminUpdateProposalEquityOverrides)
+      Decidim::Proposals::Admin::Permissions.send(:include, AdminPermissionsOverrides)
+      Decidim::Proposals::Proposal.send(:include, LocationBasedEquityAssignable)
+      Decidim::Admin::OrganizationForm.send(:include, OrganizationFormExtensions)
+      Decidim::Admin::UpdateOrganization.send(:include, UpdateOrganizationOverrides)
+      Decidim::TagsCell.send(:include, TagsCellEquityExtensions)
+    end
   end
 end

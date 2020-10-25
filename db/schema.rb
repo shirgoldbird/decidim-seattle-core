@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_09_185326) do
+ActiveRecord::Schema.define(version: 2020_10_10_194151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "decidim_accountability_results", id: :serial, force: :cascade do |t|
     t.jsonb "title"
@@ -811,6 +812,7 @@ ActiveRecord::Schema.define(version: 2020_10_09_185326) do
     t.boolean "rich_text_editor_in_public_views", default: false
     t.jsonb "admin_terms_of_use_body"
     t.string "time_zone", limit: 255, default: "UTC"
+    t.boolean "show_equity_composite_index", default: true, null: false
     t.index ["host"], name: "index_decidim_organizations_on_host", unique: true
     t.index ["name"], name: "index_decidim_organizations_on_name", unique: true
   end
@@ -1028,11 +1030,13 @@ ActiveRecord::Schema.define(version: 2020_10_09_185326) do
     t.jsonb "cost_report"
     t.jsonb "execution_period"
     t.datetime "state_published_at"
+    t.float "equity_composite_index_percentile"
     t.index "md5(body)", name: "decidim_proposals_proposal_body_search"
     t.index "md5(title)", name: "decidim_proposals_proposal_title_search"
     t.index ["created_at"], name: "index_decidim_proposals_proposals_on_created_at"
     t.index ["decidim_component_id"], name: "index_decidim_proposals_proposals_on_decidim_component_id"
     t.index ["decidim_scope_id"], name: "index_decidim_proposals_proposals_on_decidim_scope_id"
+    t.index ["equity_composite_index_percentile"], name: "index_decidim_proposals_proposals_equity_composite"
     t.index ["proposal_endorsements_count"], name: "idx_decidim_proposals_proposals_on_proposal_endorsemnts_count"
     t.index ["proposal_votes_count"], name: "index_decidim_proposals_proposals_on_proposal_votes_count"
     t.index ["state"], name: "index_decidim_proposals_proposals_on_state"
@@ -1283,6 +1287,50 @@ ActiveRecord::Schema.define(version: 2020_10_09_185326) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["decidim_organization_id"], name: "index_verifications_csv_census_to_organization"
+  end
+
+  create_table "equity_composites", primary_key: "gid", id: :serial, force: :cascade do |t|
+    t.integer "objectid", limit: 2
+    t.string "geoid10", limit: 11
+    t.string "name10", limit: 6
+    t.string "namelsad10", limit: 19
+    t.decimal "total_acres"
+    t.decimal "people_of_color_percent"
+    t.decimal "people_of_color_percentile"
+    t.decimal "english_less_than_very_well_percent"
+    t.decimal "english_less_than_very_well_percentile"
+    t.decimal "foreign_born_percent"
+    t.decimal "foreign_born_percentile"
+    t.decimal "income_below_200_percent_of_poverty_percent"
+    t.decimal "income_below_200_percent_of_poverty_percentile"
+    t.decimal "education_less_than_bachelors_percent"
+    t.decimal "education_less_than_bachelors_percentile"
+    t.decimal "adults_with_no_leisure_physical_activity_percent"
+    t.decimal "adults_with_diabetes_percent"
+    t.decimal "adults_that_are_obese_percent"
+    t.decimal "adults_with_poor_mental_health_percent"
+    t.decimal "adults_with_asthma_percent"
+    t.decimal "adults_with_disability_percent"
+    t.decimal "low_life_expectancy_at_birth_percent"
+    t.decimal "adults_with_no_leisure_physical_activity_percentile"
+    t.decimal "adults_with_diabetes_percentile"
+    t.decimal "adults_that_are_obese_percentile"
+    t.decimal "adults_with_poor_mental_health_percentile"
+    t.decimal "adults_with_asthma_percentile"
+    t.decimal "adults_with_disability_percentile"
+    t.decimal "low_life_expectancy_at_birth_percentile"
+    t.decimal "composite_index_percentage"
+    t.string "composite_index_quintile", limit: 35
+    t.decimal "race_english_languge_learners_index_percentage"
+    t.string "race_english_languge_learners_index_quintile", limit: 35
+    t.decimal "socioeconomic_index_percentage"
+    t.string "socioeconomic_index_quintile", limit: 35
+    t.decimal "health_index_percentage"
+    t.string "health_index_quintile", limit: 35
+    t.decimal "shape_area"
+    t.decimal "shape_length"
+    t.geometry "geom", limit: {:srid=>0, :type=>"multi_polygon"}
+    t.index ["geom"], name: "equity_composites_geom_idx", using: :gist
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|

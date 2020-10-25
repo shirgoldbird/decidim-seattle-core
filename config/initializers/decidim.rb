@@ -34,10 +34,10 @@ Decidim.configure do |config|
   # config.force_ssl = true
 
   # Geocoder configuration
-  # config.geocoder = {
-  #   static_map_url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview",
-  #   here_api_key: Rails.application.secrets.geocoder[:here_api_key]
-  # }
+  config.geocoder = {
+    static_map_url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview",
+    here_api_key: Rails.application.secrets.geocoder[:here_api_key]
+  }
 
   # Custom resource reference generator method. Check the docs for more info.
   # config.reference_generator = lambda do |resource, component|
