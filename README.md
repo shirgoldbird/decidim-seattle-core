@@ -29,13 +29,17 @@ After installing [Docker](https://docs.docker.com/get-docker/), run
 docker-compose up
 ```
 
-Database migrations and seeds will automatically be run if needed,
-so your instance should always be up to date.
+Database migrations will automatically be run, and you can optionally
+edit `entrypoints/docker.sh` to seed the database as well.
 
 To run a one off command, like the Rails console, you can use the
 [docker-compose `exec` command](https://docs.docker.com/compose/reference/exec/):
 
 ```
-docer-compose up
+docker-compose up -d
 docker-compose exec app bin/rails console
 ```
+
+## Production Issues
+Refer to our Playbook in [`PLAYBOOK.md`](./PLAYBOOK.md) for fixes to common production issues.
+[The Decidim documentation](https://docs.decidim.org/en/) also includes some fixes for common issues.
