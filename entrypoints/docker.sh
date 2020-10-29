@@ -16,7 +16,7 @@ if [ ! -f "$FILE" ]; then
 fi
 
 
-bin/rails db:create db:migrate
+bin/rails db:create db:schema:load
 # Uncomment to run if needed. Seeding multiple times causes errors.
 # bin/rails db:seed
 
